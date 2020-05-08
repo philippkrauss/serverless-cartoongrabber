@@ -1,18 +1,12 @@
 service: cartoongrabber
 
 plugins:
-  - serverless-webpack
   - serverless-offline
 
 provider:
   name: aws
   region: eu-central-1
   runtime: nodejs12.x
-
-custom:
-  webpack:
-    includeModules: true
-    packager: yarn
 
 package:
   individually: true

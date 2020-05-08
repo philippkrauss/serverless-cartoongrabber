@@ -1,4 +1,4 @@
-import axios from 'axios'
+const axios = require('axios')
 
 function extractImageUrlFromMeta(data) {
     let matched = data.match(/<meta property="og:image" content="(.*)">/)
@@ -7,7 +7,7 @@ function extractImageUrlFromMeta(data) {
     }
 }
 
-export const grab = async (event, context, cb) => {
+module.exports.grab = async (event, context, cb) => {
     let responseBody
     try {
         const response = await axios.get('https://www.ruthe.de')
@@ -22,4 +22,4 @@ export const grab = async (event, context, cb) => {
         },
         body: responseBody
     })
-};
+}
