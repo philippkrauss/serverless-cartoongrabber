@@ -7,24 +7,19 @@ function extractImageUrlFromMeta(data) {
     }
 }
 
-//TODO use async/await
-export const grab = (event, context, cb) => {
-    axios.get('https://www.ruthe.de').then((response) => {
-        const url = extractImageUrlFromMeta(response.data)
-        cb(null, {
-            statusCode: 200,
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: url
-        })
-    }).catch((error) => {
-        cb(null, {
-            statusCode: 200,
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: 'Nothing found'
-        })
+export const grab = async (event, context, cb) => {
+    let responseBody
+    try {
+        const response = await axios.get('https://www.ruthe.de')
+        responseBody = extractImageUrlFromMeta(response.data)
+    } catch (error) {
+        responseBody = 'nothing found'
+    }
+    cb(null, {
+        statusCode: 200,
+        headers: {
+            'Content-Type': 'text/plain'
+        },
+        body: responseBody
     })
 };
