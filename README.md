@@ -6,6 +6,18 @@ sls deploy -v
 sls remove
 sls invoke local -f grab
 
+## local execution
+- install dynamodb: `sls dynamodb install`
+- start dynamodb and create tables: `sls dynamodb start`
+- invoke function: `IS_OFFLINE=true sls invoke local -f grab`
+
+or, using serverless-offline:
+- install dynamodb: `sls dynamodb install`
+- start offline: `sls offline start`
+
+### cleanup
+- `sls dynamodb remove` 
+
 
 # plan
 1. get img URLs
@@ -37,3 +49,9 @@ around:
 trigger build in aws
 terraform: setup CI/CD
 serverless: deploy
+
+
+## Future Ideas
+
+- use typescript
+- prettier
