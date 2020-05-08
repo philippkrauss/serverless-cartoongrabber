@@ -10,7 +10,11 @@
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.4"
   },
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
+    "jest": "^26.0.1",
     "serverless": "^1.68.0",
     "serverless-offline": "^3.20.1"
   }
