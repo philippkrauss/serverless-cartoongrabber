@@ -1,4 +1,4 @@
-const grabber = require('../handlers/grabber');
+const grabber = require('../src/grabber');
 const axios = require('axios')
 
 jest.mock('axios')

@@ -21,11 +21,15 @@ provider:
       Resource: "*"
 
 package:
-  individually: true
+  include:
+    - handlers/**
+    - handler.js
+  exclude:
+    - test/**
 
 functions:
   grab:
-    handler: handlers/grabber.grab
+    handler: handlers.grab
     events:
       - http:
           method: get
