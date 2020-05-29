@@ -57,4 +57,3 @@ serverless: deploy
 ## Future Ideas
 
 - use typescript
-- prettier

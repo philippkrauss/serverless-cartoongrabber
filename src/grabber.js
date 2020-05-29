@@ -3,7 +3,7 @@ const dynamoDbClient = require('./dynamoDbClient')
 
 //TODO logging?
 /* eslint-disable no-unused-vars */
-module.exports.grab = async (event, context, cb) => {
+module.exports.grab = async (event, context) => {
 	/* eslint-enable */
 	const source = {
 		url: 'https://www.ruthe.de',

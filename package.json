@@ -25,6 +25,6 @@
     "prettier": "^2.0.5",
     "serverless": "^1.68.0",
     "serverless-dynamodb-local": "^0.2.39",
-    "serverless-offline": "^3.20.1"
+    "serverless-offline": "^6.3.0"
   }
 }
