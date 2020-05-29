@@ -11,6 +11,8 @@ provider:
   runtime: nodejs12.x
   environment:
     CARTOON_TABLE: cartoons
+    SLACK_TOKEN: ${ssm:/cartoongrabber-slack-secret~true}
+    SLACK_CHANNEL_NAME: ${ssm:/cartoongrabber-slack-channel-name}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -34,7 +36,13 @@ functions:
       - http:
           method: get
           path: grab
-      - schedule: cron(* * * * * *)
+      - schedule: rate(1 minute)
+  report:
+    handler: handlers.report
+    events:
+      - http:
+          method: get
+          path: report
 
 resources:
   Resources:
