@@ -18,7 +18,7 @@ provider:
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:PutItem
-      Resource: "*"
+      Resource: '*'
 
 package:
   include:
@@ -39,20 +39,20 @@ functions:
 resources:
   Resources:
     CartoonsDynamoDbTable:
-      Type: "AWS::DynamoDB::Table"
+      Type: 'AWS::DynamoDB::Table'
       #      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: "name"
-            AttributeType: "S"
+          - AttributeName: 'name'
+            AttributeType: 'S'
         KeySchema:
-          - AttributeName: "name"
-            KeyType: "HASH"
+          - AttributeName: 'name'
+            KeyType: 'HASH'
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         StreamSpecification:
-          StreamViewType: "NEW_AND_OLD_IMAGES"
+          StreamViewType: 'NEW_AND_OLD_IMAGES'
         TableName: ${self:provider.environment.CARTOON_TABLE}
 
 custom:
@@ -60,6 +60,6 @@ custom:
     stages:
       - dev
     start:
-      port: "8000"
+      port: '8000'
       inMemory: true,
       migrate: true
