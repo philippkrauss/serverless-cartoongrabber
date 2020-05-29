@@ -1,4 +1,5 @@
 .idea
+!.idea/watcherTasks.xml
 .serverless
 node_modules
 .dynamodb
