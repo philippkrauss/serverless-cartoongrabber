@@ -39,16 +39,14 @@ functions:
 resources:
   Resources:
     CartoonsDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-#      DeletionPolicy: Retain
+      Type: "AWS::DynamoDB::Table"
+      #      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: "name"
+          - AttributeName: "name"
             AttributeType: "S"
         KeySchema:
-          -
-            AttributeName: "name"
+          - AttributeName: "name"
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 1

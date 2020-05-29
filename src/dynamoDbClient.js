@@ -1,12 +1,14 @@
-const dynamodb = require('serverless-dynamodb-client');
+const dynamodb = require('serverless-dynamodb-client')
 
-const docClient = dynamodb.doc;
+const docClient = dynamodb.doc
 
-function put({tableName, item}) {
-    return docClient.put({
-        TableName: tableName,
-        Item: item,
-    }).promise()
+function put({ tableName, item }) {
+	return docClient
+		.put({
+			TableName: tableName,
+			Item: item,
+		})
+		.promise()
 }
 
-module.exports = {put}
+module.exports = { put }

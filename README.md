@@ -7,20 +7,24 @@ sls remove
 sls invoke local -f grab
 
 ## local execution
+
 - install dynamodb: `sls dynamodb install`
 - start dynamodb and create tables: `sls dynamodb start`
 - invoke function: `IS_OFFLINE=true sls invoke local -f grab`
 
 or, using serverless-offline:
+
 - install dynamodb: `sls dynamodb install`
 - start offline: `sls offline start`
 
 ### cleanup
-- `sls dynamodb remove` 
 
+- `sls dynamodb remove`
 
 # plan
+
 1. get img URLs
+
 - trigger regularly
 - extract URL
 
@@ -37,19 +41,18 @@ Dilbert:
 GET https://dilbert.com/strip/2020-04-24, extract URL from <meta property="og:image" content="http://assets.amuniversal.com/aa119890567f0138f584005056a9545d"/>
 
 2. check if URL is new
+
 - persist last valid URL
 - technologies: DB, plain file, S3 bucket
 
 3. post URL to slack
-https://api.slack.com/messaging/sending
-https://api.slack.com/methods/chat.postMessage
-
+   https://api.slack.com/messaging/sending
+   https://api.slack.com/methods/chat.postMessage
 
 around:
 trigger build in aws
 terraform: setup CI/CD
 serverless: deploy
-
 
 ## Future Ideas
 
