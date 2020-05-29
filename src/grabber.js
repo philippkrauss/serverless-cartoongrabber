@@ -1,4 +1,5 @@
 const axios = require('axios')
+const response = require('./response')
 const dynamoDbClient = require('./dynamoDbClient')
 
 //TODO logging?
@@ -14,11 +15,11 @@ module.exports.grab = async (event, context) => {
 		const url = extractImageUrlFromMeta(websiteText)
 		const cartoon = createCartoon(source.name, url)
 		await addCartoonToDb(cartoon)
-		return createResponse({
+		return response.createResponse({
 			url: url,
 		})
 	} catch (error) {
-		return createErrorResponse({
+		return response.createErrorResponse({
 			error: error,
 		})
 	}
@@ -49,23 +50,5 @@ function createCartoon(name, url) {
 	return {
 		name: name,
 		lastImageUrl: url,
-	}
-}
-
-function createResponse(body) {
-	return createJsonResponse(200, body)
-}
-
-function createErrorResponse(body) {
-	return createJsonResponse(500, body)
-}
-
-function createJsonResponse(statusCode, body) {
-	return {
-		statusCode: statusCode,
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(body),
 	}
 }
