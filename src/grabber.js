@@ -24,6 +24,11 @@ const SOURCES = [
 			'"https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/"yyyy/yyyy-mm-dd".gif"',
 		grabber: grabUsingUrlFromDate,
 	},
+	{
+		name: 'Hägar the Horrible',
+		url: 'https://www.comicskingdom.com/hagar-the-horrible',
+		grabber: grabUsingMetaProperty,
+	},
 ]
 module.exports.SOURCES = SOURCES
 /* eslint-disable no-unused-vars */
