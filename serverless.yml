@@ -21,6 +21,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: '*'
+  cfLogs: true
 
 package:
   include:
@@ -69,6 +70,12 @@ resources:
         StreamSpecification:
           StreamViewType: 'NEW_IMAGE'
         TableName: ${self:provider.environment.CARTOON_TABLE}
+    GrabLogGroup:
+      Properties:
+        RetentionInDays: "14"
+    ReportLogGroup:
+      Properties:
+        RetentionInDays: "14"
 
 custom:
   dynamodb:

@@ -6,6 +6,7 @@ module.exports.report = async (event, context) => {
 	/* eslint-enable */
 	try {
 		const cartoon = extractCartoonFromEvent(event)
+		console.log('received new cartoon for reporting: ', cartoon)
 		await slackClient.sendMessage(
 			`New cartoon at ${cartoon.name}: ${cartoon.lastImageUrl}`
 		)

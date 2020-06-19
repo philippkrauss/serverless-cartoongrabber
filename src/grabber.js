@@ -2,7 +2,6 @@ const axios = require('axios')
 const response = require('./response')
 const dynamoDbClient = require('./dynamoDbClient')
 
-//TODO logging?
 /* eslint-disable no-unused-vars */
 module.exports.grab = async (event, context) => {
 	/* eslint-enable */
@@ -19,6 +18,7 @@ module.exports.grab = async (event, context) => {
 			url: url,
 		})
 	} catch (error) {
+		console.error('an error occurred', error)
 		return response.createErrorResponse({
 			error: error,
 		})
@@ -26,12 +26,13 @@ module.exports.grab = async (event, context) => {
 }
 
 async function getWebsiteText(url) {
+	console.log('grabbing from ', url)
 	const response = await axios.get(url)
 	return response.data
 }
 
 async function addCartoonToDb(cartoon) {
-	console.log('Submitting cartoon')
+	console.log('Submitting cartoon to dynamodb', cartoon)
 	const tableName = process.env.CARTOON_TABLE
 		? process.env.CARTOON_TABLE
 		: 'cartoons'
@@ -41,6 +42,7 @@ async function addCartoonToDb(cartoon) {
 function extractImageUrlFromMeta(data) {
 	let matched = data.match(/<meta property="og:image" content="(.*)">/)
 	if (matched && matched.length > 1) {
+		console.log('extracted ', matched[1])
 		return matched[1]
 	}
 	throw new Error('did not match!')
