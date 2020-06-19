@@ -30,7 +30,6 @@ const SOURCES = [
 		grabber: grabUsingMetaProperty,
 	},
 ]
-module.exports.SOURCES = SOURCES
 /* eslint-disable no-unused-vars */
 module.exports.grab = async (event, context) => {
 	/* eslint-enable */
@@ -59,8 +58,6 @@ async function grabUsingMetaProperty(source) {
 		console.error('an error occurred when grabbing from ' + source.name, error)
 	}
 }
-module.exports.grabUsingMetaProperty = grabUsingMetaProperty
-
 async function grabUsingDateAndMetaProperty(source) {
 	try {
 		console.log('grabbing using date and meta property, source: ', source.name)
@@ -70,8 +67,6 @@ async function grabUsingDateAndMetaProperty(source) {
 		console.error('an error occurred when grabbing from ' + source.name, error)
 	}
 }
-module.exports.grabUsingDateAndMetaProperty = grabUsingDateAndMetaProperty
-
 async function grabUsingUrlFromDate(source) {
 	try {
 		console.log('grabbing using url from date, source: ', source.name)
@@ -83,8 +78,6 @@ async function grabUsingUrlFromDate(source) {
 		console.log('no cartoon available yet')
 	}
 }
-module.exports.grabUsingUrlFromDate = grabUsingUrlFromDate
-
 async function getWebsiteText(url) {
 	console.log('grabbing from ', url)
 	const response = await axios.get(url)
@@ -113,4 +106,11 @@ function createCartoon(name, url) {
 		name: name,
 		lastImageUrl: url,
 	}
+}
+
+module.exports = {
+	SOURCES,
+	grabUsingMetaProperty,
+	grabUsingDateAndMetaProperty,
+	grabUsingUrlFromDate,
 }
