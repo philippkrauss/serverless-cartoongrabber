@@ -35,11 +35,42 @@ test('bad HTML returned when grabbing using meta property', async () => {
 test('grab a cartoon using date and meta property', async () => {
 	MockDate.set('2020-06-01')
 	const axiosGetStub = axios.get.mockResolvedValue({ data: HTML_CONTENT })
-	const cartoon = await grabber.grabUsingDateAndMetaProperty(SOURCE)
+	const cartoon = await grabber.grabUsingDateAndMetaProperty({
+		name: 'ruthe',
+		url: '"https://www.ruthe.de/"yyyy-mm-dd',
+	})
 	expect(axiosGetStub).toHaveBeenCalledTimes(1)
 	expect(axiosGetStub).toHaveBeenCalledWith('https://www.ruthe.de/2020-06-01')
 	expect(cartoon).toEqual({
 		lastImageUrl: CARTOON_URL,
 		name: 'ruthe',
 	})
+})
+
+test('grab a cartoon using date-formatted url', async () => {
+	MockDate.set('2020-06-01')
+	const axiosGetStub = axios.get.mockResolvedValue({})
+
+	const cartoon = await grabber.grabUsingUrlFromDate({
+		name: 'test',
+		url: '"http://www.test.de/"yyyy/yyyy-mm-dd',
+	})
+
+	expect(axiosGetStub).toHaveBeenCalledTimes(1)
+	expect(axiosGetStub).toHaveBeenCalledWith(
+		'http://www.test.de/2020/2020-06-01'
+	)
+	expect(cartoon).toEqual({
+		lastImageUrl: 'http://www.test.de/2020/2020-06-01',
+		name: 'test',
+	})
+})
+
+test('date-formatted url not yet available', async () => {
+	const axiosGetStub = axios.get.mockRejectedValue({})
+	const cartoon = await grabber.grabUsingUrlFromDate({
+		name: 'test',
+		url: '"http://www.test.de/"yyyy/yyyy-mm-dd',
+	})
+	expect(cartoon).toBeUndefined()
 })

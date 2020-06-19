@@ -7,6 +7,7 @@
     "aws-sdk": "^2.662.0",
     "axios": "^0.19.2",
     "bluebird": "^3.5.1",
+    "dateformat": "^3.0.3",
     "regenerator-runtime": "^0.13.5",
     "serverless-dynamodb-client": "^0.0.2"
   },

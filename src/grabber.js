@@ -1,4 +1,5 @@
 const axios = require('axios')
+const dateFormat = require('dateformat')
 const dynamoDbClient = require('./dynamoDbClient')
 
 const SOURCES = [
@@ -14,8 +15,14 @@ const SOURCES = [
 	},
 	{
 		name: 'Dilbert',
-		url: 'https://dilbert.com/strip/',
+		url: '"https://dilbert.com/strip/"yyyy-mm-dd',
 		grabber: grabUsingDateAndMetaProperty,
+	},
+	{
+		name: 'Garfield',
+		url:
+			'"https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/"yyyy/yyyy-mm-dd".gif"',
+		grabber: grabUsingUrlFromDate,
 	},
 ]
 module.exports.SOURCES = SOURCES
@@ -52,7 +59,7 @@ module.exports.grabUsingMetaProperty = grabUsingMetaProperty
 async function grabUsingDateAndMetaProperty(source) {
 	try {
 		console.log('grabbing using date and meta property, source: ', source.name)
-		const newUrl = source.url + formatCurrentDate()
+		const newUrl = dateFormat(new Date(), source.url)
 		return grabUsingMetaProperty({ name: source.name, url: newUrl })
 	} catch (error) {
 		console.error('an error occurred when grabbing from ' + source.name, error)
@@ -60,10 +67,18 @@ async function grabUsingDateAndMetaProperty(source) {
 }
 module.exports.grabUsingDateAndMetaProperty = grabUsingDateAndMetaProperty
 
-function formatCurrentDate() {
-	const currentDate = new Date()
-	return currentDate.toISOString().substr(0, 10)
+async function grabUsingUrlFromDate(source) {
+	try {
+		console.log('grabbing using url from date, source: ', source.name)
+		const url = dateFormat(new Date(), source.url)
+		console.log('using URL: ', url)
+		const response = await axios.get(url)
+		return createCartoon(source.name, url)
+	} catch (error) {
+		console.log('no cartoon available yet')
+	}
 }
+module.exports.grabUsingUrlFromDate = grabUsingUrlFromDate
 
 async function getWebsiteText(url) {
 	console.log('grabbing from ', url)
