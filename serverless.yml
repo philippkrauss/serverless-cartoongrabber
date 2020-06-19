@@ -34,10 +34,7 @@ functions:
   grab:
     handler: handlers.grab
     events:
-      - http:
-          method: get
-          path: grab
-      - schedule: rate(1 minute)
+      - schedule: rate(4 hours)
   report:
     handler: handlers.report
     events:
@@ -48,9 +45,6 @@ functions:
               - CartoonsDynamoDbTable
               - StreamArn
           batchSize: 1
-      - http:
-          method: get
-          path: report
 
 resources:
   Resources:
