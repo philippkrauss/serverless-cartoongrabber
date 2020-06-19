@@ -1,5 +1,4 @@
 const slackClient = require('./slackClient')
-const { createResponse, createErrorResponse } = require('./response')
 
 /* eslint-disable no-unused-vars */
 module.exports.report = async (event, context) => {
@@ -10,10 +9,10 @@ module.exports.report = async (event, context) => {
 		await slackClient.sendMessage(
 			`New cartoon at ${cartoon.name}: ${cartoon.lastImageUrl}`
 		)
-		return createResponse({ cartoon })
+		return true
 	} catch (error) {
 		console.error('error: ', error)
-		return createErrorResponse({ error })
+		return false
 	}
 }
 function extractCartoonFromEvent(event) {

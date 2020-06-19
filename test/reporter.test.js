@@ -20,20 +20,19 @@ const EVENT = {
 
 test('report a new cartoon to slack', async () => {
 	const sendMessageStub = slackClient.sendMessage.mockResolvedValue({})
-	const response = await reporter.report(EVENT, null)
-	expect(response.statusCode).toEqual(200)
+	await reporter.report(EVENT, null)
 	expect(sendMessageStub).toHaveBeenCalledTimes(1)
 	expect(sendMessageStub).toHaveBeenCalledWith(
 		`New cartoon at ${CARTOON_NAME}: ${CARTOON_URL}`
 	)
 })
 test('handle invalid event', async () => {
-	const response = await reporter.report({ invalid: 'event' }, null)
+	const result = await reporter.report({ invalid: 'event' }, null)
 	expect(slackClient.sendMessage).toHaveBeenCalledTimes(0)
-	expect(response.statusCode).toEqual(500)
+	expect(result).toEqual(false)
 })
 test('handle slack error', async () => {
 	const sendMessageStub = slackClient.sendMessage.mockRejectedValue({})
-	const response = await reporter.report(EVENT, null)
-	expect(response.statusCode).toEqual(500)
+	const result = await reporter.report(EVENT, null)
+	expect(result).toEqual(false)
 })
