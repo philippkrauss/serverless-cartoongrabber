@@ -40,6 +40,13 @@ functions:
   report:
     handler: handlers.report
     events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt:
+              - CartoonsDynamoDbTable
+              - StreamArn
+          batchSize: 1
       - http:
           method: get
           path: report
@@ -60,7 +67,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         StreamSpecification:
-          StreamViewType: 'NEW_AND_OLD_IMAGES'
+          StreamViewType: 'NEW_IMAGE'
         TableName: ${self:provider.environment.CARTOON_TABLE}
 
 custom:
