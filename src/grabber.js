@@ -31,7 +31,7 @@ const SOURCES = [
 	},
 ]
 /* eslint-disable no-unused-vars */
-module.exports.grab = async (event, context) => {
+async function grab(event, context) {
 	/* eslint-enable */
 	for (const source of SOURCES) {
 		try {
@@ -110,6 +110,7 @@ function createCartoon(name, url) {
 
 module.exports = {
 	SOURCES,
+	grab,
 	grabUsingMetaProperty,
 	grabUsingDateAndMetaProperty,
 	grabUsingUrlFromDate,
