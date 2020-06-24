@@ -11,7 +11,7 @@ provider:
   runtime: nodejs12.x
   environment:
     CARTOON_TABLE: cartoons
-    SLACK_TOKEN: ${ssm:/cartoongrabber-slack-secret~true}
+    SLACK_URL: ${ssm:/cartoongrabber-slack-url~true}
     SLACK_CHANNEL_NAME: ${ssm:/cartoongrabber-slack-channel-name}
   iamRoleStatements:
     - Effect: Allow
