@@ -34,7 +34,7 @@ functions:
   grab:
     handler: handlers.grab
     events:
-      - schedule: rate(4 hours)
+      - schedule: cron(25 5,9,13 * * ? *)
   report:
     handler: handlers.report
     events:
