@@ -6,6 +6,8 @@ const slackChannelName = process.env.SLACK_CHANNEL_NAME
 async function sendMessage(text) {
 	const body = {
 		channel: slackChannelName,
+		username: 'cartoongrabber',
+		icon_emoji: ':tada:',
 		text,
 	}
 	console.log('sending to slack: ', body)
