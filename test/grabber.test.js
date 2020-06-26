@@ -6,6 +6,11 @@ jest.mock('axios')
 
 const CARTOON_URL = 'some-cartoon-url.jpg'
 const HTML_CONTENT = `<meta property="og:image" content="${CARTOON_URL}">`
+const HTML_CONTENT_THUMBNAIL =
+	'<meta name="thumbnail"\n' +
+	'          content="https://joscha.com/data/media/cartoons/thumbs/7f5700aa70628b0a10b5a9c72ea3c50d.png"/> asdf" thumbs/7f5700aa70628b0a10b5a9c72ea3c50d.png"'
+const CARTOON_URL_WITHOUT_THUMBS =
+	'https://joscha.com/data/media/cartoons/7f5700aa70628b0a10b5a9c72ea3c50d.png'
 const SOURCE = {
 	name: 'ruthe',
 	url: 'https://www.ruthe.de/',
@@ -67,10 +72,27 @@ test('grab a cartoon using date-formatted url', async () => {
 })
 
 test('date-formatted url not yet available', async () => {
-	const axiosGetStub = axios.get.mockRejectedValue({})
+	axios.get.mockRejectedValue({})
 	const cartoon = await grabber.grabUsingUrlFromDate({
 		name: 'test',
 		url: '"http://www.test.de/"yyyy/yyyy-mm-dd',
 	})
 	expect(cartoon).toBeUndefined()
+})
+test('grab a cartoon using regex extraction', async () => {
+	const axiosGetStub = axios.get.mockResolvedValue({
+		data: HTML_CONTENT_THUMBNAIL,
+	})
+
+	const cartoon = await grabber.grabUsingRegexExtraction({
+		name: 'Nicht Lustig',
+		url: 'https://joscha.com/',
+		regex: /<meta name="thumbnail"\s+content="(.*?)thumbs\/([a-zA-Z0-9\.]*?)"/,
+	})
+	expect(axiosGetStub).toHaveBeenCalledTimes(1)
+	expect(axiosGetStub).toHaveBeenCalledWith('https://joscha.com/')
+	expect(cartoon).toEqual({
+		lastImageUrl: CARTOON_URL_WITHOUT_THUMBS,
+		name: 'Nicht Lustig',
+	})
 })

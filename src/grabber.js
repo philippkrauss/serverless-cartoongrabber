@@ -29,6 +29,12 @@ const SOURCES = [
 		url: 'https://www.comicskingdom.com/hagar-the-horrible',
 		grabber: grabUsingMetaProperty,
 	},
+	{
+		name: 'Nicht Lustig',
+		url: 'https://joscha.com/',
+		regex: /<meta name="thumbnail"\s+content="(.*?)thumbs\/([a-zA-Z0-9\.]*?)"/,
+		grabber: grabUsingRegexExtraction,
+	},
 ]
 /* eslint-disable no-unused-vars */
 async function grab(event, context) {
@@ -38,6 +44,7 @@ async function grab(event, context) {
 			const cartoon = await source.grabber({
 				name: source.name,
 				url: source.url,
+				regex: source.regex,
 			})
 			if (cartoon) {
 				await addCartoonToDb(cartoon)
@@ -58,6 +65,18 @@ async function grabUsingMetaProperty(source) {
 		console.error('an error occurred when grabbing from ' + source.name, error)
 	}
 }
+
+async function grabUsingRegexExtraction(source) {
+	try {
+		console.log('grabbing using regex extraction, source: ', source.name)
+		const websiteText = await getWebsiteText(source.url)
+		const url = extractImageUrlFromRegex(websiteText, source.regex)
+		return createCartoon(source.name, url)
+	} catch (error) {
+		console.error('an error occurred when grabbing from ' + source.name, error)
+	}
+}
+
 async function grabUsingDateAndMetaProperty(source) {
 	try {
 		console.log('grabbing using date and meta property, source: ', source.name)
@@ -93,12 +112,20 @@ async function addCartoonToDb(cartoon) {
 }
 
 function extractImageUrlFromMeta(data) {
-	let matched = data.match(/<meta property="og:image" content="(.*)"/)
+	return extractImageUrlFromRegex(
+		data,
+		/<meta property="og:image" content="(.*?)"/
+	)
+}
+
+function extractImageUrlFromRegex(data, regex) {
+	let matched = data.match(regex)
 	if (matched && matched.length > 1) {
-		console.log('extracted ', matched[1])
-		return matched[1]
+		matched.shift()
+		console.log('extracted ', matched.join(''))
+		return matched.join('')
 	}
-	throw new Error('did not match!')
+	throw new Error('did not match ' + regex + ' in ' + data)
 }
 
 function createCartoon(name, url) {
@@ -114,4 +141,5 @@ module.exports = {
 	grabUsingMetaProperty,
 	grabUsingDateAndMetaProperty,
 	grabUsingUrlFromDate,
+	grabUsingRegexExtraction,
 }
