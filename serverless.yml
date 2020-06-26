@@ -7,12 +7,13 @@ plugins:
 
 provider:
   name: aws
+  stage: dev
   region: eu-central-1
   runtime: nodejs12.x
   environment:
-    CARTOON_TABLE: cartoons
-    SLACK_URL: ${ssm:/cartoongrabber-slack-url~true}
-    SLACK_CHANNEL_NAME: ${ssm:/cartoongrabber-slack-channel-name}
+    CARTOON_TABLE: ${self:custom.${self:custom.stage}.tableName}
+    SLACK_URL: ${ssm:/cartoongrabber/${self:custom.stage}/slack-url~true}
+    SLACK_CHANNEL_NAME: ${ssm:/cartoongrabber/${self:custom.stage}/slack-channel-name}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -22,6 +23,8 @@ provider:
           - CartoonsDynamoDbTable
           - Arn
   cfLogs: true
+  stackTags:
+    app: cartoongrabber
 
 package:
   include:
@@ -34,7 +37,7 @@ functions:
   grab:
     handler: handlers.grab
     events:
-      - schedule: cron(25 5,9,13 * * ? *)
+      - schedule: ${self:custom.${self:custom.stage}.schedule}
   report:
     handler: handlers.report
     events:
@@ -70,6 +73,13 @@ resources:
         RetentionInDays: "14"
 
 custom:
+  stage: ${opt:stage, self:provider.stage}
+  prod:
+    schedule: cron(25 5,9,13 * * ? *)
+    tableName: cartoons
+  dev:
+    schedule:
+    tableName: cartoons-dev
   dynamodb:
     stages:
       - dev
