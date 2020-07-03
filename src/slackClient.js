@@ -1,4 +1,5 @@
 const axios = require('axios')
+const log = require('lambda-log')
 
 const slackUrl = process.env.SLACK_URL
 const slackChannelName = process.env.SLACK_CHANNEL_NAME
@@ -10,9 +11,9 @@ async function sendMessage(text) {
 		icon_emoji: ':tada:',
 		text,
 	}
-	console.log('sending to slack: ', body)
+	log.info('sending to slack: ', body)
 	let response = await axios.post(slackUrl, body)
-	console.log('slack response: ', response.data)
+	log.info('slack response: ', response.data)
 }
 
 module.exports = { sendMessage }

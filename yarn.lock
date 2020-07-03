@@ -3525,7 +3525,7 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
-fast-safe-stringify@^2.0.4:
+fast-safe-stringify@^2.0.4, fast-safe-stringify@^2.0.6:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.7.tgz#124aa885899261f68aedb42a7c080de9da608743"
   integrity sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
@@ -5451,6 +5451,13 @@ kuler@1.0.x:
   integrity sha512-J9nVUucG1p/skKul6DU3PUZrhs0LPulNaeUOox0IyXDi8S4CztTHs1gQphhuZmzXG7VOQSf6NJfKuzteQLv9gQ==
   dependencies:
     colornames "^1.1.1"
+
+lambda-log@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/lambda-log/-/lambda-log-2.4.0.tgz#2965c0329abcce6768f76ae3220468bbd42d4107"
+  integrity sha512-py9aD8eHM4gx20t8LQ1UZfWSuixtpjFB/SzGwUoeKoELkekR6SzTIokS6vqlT8OmRBVuZFLiZbj+JQ8YCnKATg==
+  dependencies:
+    fast-safe-stringify "^2.0.6"
 
 latest-version@^3.0.0:
   version "3.1.0"

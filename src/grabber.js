@@ -1,6 +1,7 @@
 const axios = require('axios')
 const dateFormat = require('dateformat')
 const dynamoDbClient = require('./dynamoDbClient')
+const log = require('lambda-log')
 
 const SOURCES = [
 	{
@@ -50,61 +51,61 @@ async function grab(event, context) {
 				await addCartoonToDb(cartoon)
 			}
 		} catch (error) {
-			console.error('an unexpected error occurred', error)
+			log.error('an unexpected error occurred', error)
 		}
 	}
 }
 
 async function grabUsingMetaProperty(source) {
 	try {
-		console.log('grabbing using meta property, source: ', source.name)
+		log.info('grabbing using meta property, source: ', source.name)
 		const websiteText = await getWebsiteText(source.url)
 		const url = extractImageUrlFromMeta(websiteText)
 		return createCartoon(source.name, url)
 	} catch (error) {
-		console.error('an error occurred when grabbing from ' + source.name, error)
+		log.error('an error occurred when grabbing from ' + source.name, error)
 	}
 }
 
 async function grabUsingRegexExtraction(source) {
 	try {
-		console.log('grabbing using regex extraction, source: ', source.name)
+		log.info('grabbing using regex extraction, source: ', source.name)
 		const websiteText = await getWebsiteText(source.url)
 		const url = extractImageUrlFromRegex(websiteText, source.regex)
 		return createCartoon(source.name, url)
 	} catch (error) {
-		console.error('an error occurred when grabbing from ' + source.name, error)
+		log.error('an error occurred when grabbing from ' + source.name, error)
 	}
 }
 
 async function grabUsingDateAndMetaProperty(source) {
 	try {
-		console.log('grabbing using date and meta property, source: ', source.name)
+		log.info('grabbing using date and meta property, source: ', source.name)
 		const newUrl = dateFormat(new Date(), source.url)
 		return grabUsingMetaProperty({ name: source.name, url: newUrl })
 	} catch (error) {
-		console.error('an error occurred when grabbing from ' + source.name, error)
+		log.error('an error occurred when grabbing from ' + source.name, error)
 	}
 }
 async function grabUsingUrlFromDate(source) {
 	try {
-		console.log('grabbing using url from date, source: ', source.name)
+		log.info('grabbing using url from date, source: ', source.name)
 		const url = dateFormat(new Date(), source.url)
-		console.log('using URL: ', url)
+		log.info('using URL: ', url)
 		const response = await axios.get(url)
 		return createCartoon(source.name, url)
 	} catch (error) {
-		console.log('no cartoon available yet')
+		log.info('no cartoon available yet')
 	}
 }
 async function getWebsiteText(url) {
-	console.log('grabbing from ', url)
+	log.info('grabbing from ', url)
 	const response = await axios.get(url)
 	return response.data
 }
 
 async function addCartoonToDb(cartoon) {
-	console.log('Submitting cartoon to dynamodb', cartoon)
+	log.info('Submitting cartoon to dynamodb', cartoon)
 	const tableName = process.env.CARTOON_TABLE
 		? process.env.CARTOON_TABLE
 		: 'cartoons'
@@ -122,7 +123,7 @@ function extractImageUrlFromRegex(data, regex) {
 	let matched = data.match(regex)
 	if (matched && matched.length > 1) {
 		matched.shift()
-		console.log('extracted ', matched.join(''))
+		log.info('extracted ', matched.join(''))
 		return matched.join('')
 	}
 	throw new Error('did not match ' + regex + ' in ' + data)

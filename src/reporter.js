@@ -1,17 +1,18 @@
 const slackClient = require('./slackClient')
+const log = require('lambda-log')
 
 /* eslint-disable no-unused-vars */
 module.exports.report = async (event, context) => {
 	/* eslint-enable */
 	try {
 		const cartoon = extractCartoonFromEvent(event)
-		console.log('received new cartoon for reporting: ', cartoon)
+		log.info('received new cartoon for reporting: ', cartoon)
 		await slackClient.sendMessage(
 			`New cartoon at ${cartoon.name}: ${cartoon.lastImageUrl}`
 		)
 		return true
 	} catch (error) {
-		console.error('error: ', error)
+		log.error('error: ', error)
 		return false
 	}
 }
@@ -24,7 +25,7 @@ function extractCartoonFromEvent(event) {
 			lastImageUrl: newImage.lastImageUrl.S,
 		}
 	} catch (error) {
-		console.error('event has bad structure', event)
+		log.error('event has bad structure', event)
 		throw error
 	}
 }
