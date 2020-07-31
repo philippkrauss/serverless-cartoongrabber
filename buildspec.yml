@@ -3,6 +3,6 @@ phases:
   install:
     commands:
       - yarn install
-  test:
+  pre_build:
     commands:
       - yarn test
