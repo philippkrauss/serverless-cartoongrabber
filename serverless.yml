@@ -67,10 +67,10 @@ resources:
         TableName: ${self:provider.environment.CARTOON_TABLE}
     GrabLogGroup:
       Properties:
-        RetentionInDays: "14"
+        RetentionInDays: '14'
     ReportLogGroup:
       Properties:
-        RetentionInDays: "14"
+        RetentionInDays: '14'
 
 custom:
   stage: ${opt:stage, self:provider.stage}
