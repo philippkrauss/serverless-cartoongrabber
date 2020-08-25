@@ -21,9 +21,8 @@ const SOURCES = [
 	},
 	{
 		name: 'Garfield',
-		url:
-			'"https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/"yyyy/yyyy-mm-dd".gif"',
-		grabber: grabUsingUrlFromDate,
+		url: '"https://www.gocomics.com/garfield/"yyyy/mm/dd',
+		grabber: grabUsingDateAndMetaProperty,
 	},
 	{
 		name: 'Hägar the Horrible',
