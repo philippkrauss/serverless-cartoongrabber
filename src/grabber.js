@@ -10,6 +10,11 @@ const SOURCES = [
 		grabber: grabUsingMetaProperty,
 	},
 	{
+		name: 'XKCD',
+		url: 'https://xkcd.com/',
+		grabber: grabUsingMetaProperty,
+	},
+	{
 		name: 'Zits',
 		url: 'https://www.comicskingdom.com/zits/',
 		grabber: grabUsingMetaProperty,
