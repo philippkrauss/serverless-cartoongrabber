@@ -134,6 +134,10 @@ function extractImageUrlFromRegex(data, regex) {
 }
 
 function createCartoon(name, url) {
+	if (!url) {
+		log.info(`No URL was extracted for source ${name}`)
+		return null
+	}
 	return {
 		name: name,
 		lastImageUrl: url,

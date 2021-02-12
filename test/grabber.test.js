@@ -6,6 +6,7 @@ jest.mock('axios')
 
 const CARTOON_URL = 'some-cartoon-url.jpg'
 const HTML_CONTENT = `<meta property="og:image" content="${CARTOON_URL}">`
+const HTML_CONTENT_EMPTY_META = `<meta property="og:image" content="">`
 const HTML_CONTENT_THUMBNAIL =
 	'<meta name="thumbnail"\n' +
 	'          content="https://joscha.com/data/media/cartoons/thumbs/7f5700aa70628b0a10b5a9c72ea3c50d.png"/> asdf" thumbs/7f5700aa70628b0a10b5a9c72ea3c50d.png"'
@@ -26,6 +27,15 @@ test('grab a cartoon using meta property', async () => {
 		name: 'ruthe',
 	})
 })
+
+test('handle empty URL returned when grabbing cartoon', async () => {
+	const axiosGetStub = axios.get.mockResolvedValue({
+		data: HTML_CONTENT_EMPTY_META,
+	})
+	const cartoon = await grabber.grabUsingMetaProperty(SOURCE)
+	expect(cartoon).toBeNull()
+})
+
 test('HTTP error when grabbing using meta property', async () => {
 	axios.get.mockRejectedValue(new Error())
 	const cartoon = await grabber.grabUsingMetaProperty(SOURCE)
