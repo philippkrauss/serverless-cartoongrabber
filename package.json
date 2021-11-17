@@ -4,7 +4,7 @@
   "author": "Philipp Krauss",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.662.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.21.2",
     "bluebird": "^3.5.1",
     "dateformat": "^3.0.3",
