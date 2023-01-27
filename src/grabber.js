@@ -6,7 +6,7 @@ const log = require('lambda-log')
 const SOURCES = [
 	{
 		name: 'Ruthe',
-		url: 'https://www.ruthe.de/',
+		url: 'https://ruthe.de/',
 		grabber: grabUsingMetaProperty,
 	},
 	{
@@ -31,7 +31,7 @@ const SOURCES = [
 	},
 	{
 		name: 'Hägar the Horrible',
-		url: 'https://www.comicskingdom.com/hagar-the-horrible',
+		url: 'https://comicskingdom.com/hagar-the-horrible',
 		grabber: grabUsingMetaProperty,
 	},
 	{
@@ -73,7 +73,7 @@ async function grabUsingMetaProperty(source) {
 
 async function grabUsingRegexExtraction(source) {
 	try {
-		log.info('grabbing using regex extraction, source: ', source.name)
+		log.info('grabbing using regex extraction, source: ' + source.name)
 		const websiteText = await getWebsiteText(source.url)
 		const url = extractImageUrlFromRegex(websiteText, source.regex)
 		return createCartoon(source.name, url)
@@ -103,8 +103,11 @@ async function grabUsingUrlFromDate(source) {
 	}
 }
 async function getWebsiteText(url) {
+	const t0 = Date.now()
 	log.info('grabbing from ' + url)
 	const response = await axios.get(url)
+	const duration = Date.now() - t0
+	log.info(`grabbing took ${duration} millis (${url})`, { duration, url })
 	return response.data
 }
 
