@@ -4,3 +4,5 @@
 node_modules
 .dynamodb
 yarn-error.log
+.terraform
+dist

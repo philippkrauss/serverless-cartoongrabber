@@ -16,7 +16,7 @@ const SOURCES = [
 	},
 	{
 		name: 'Zits',
-		url: 'https://www.comicskingdom.com/zits/',
+		url: 'https://comicskingdom.com/zits',
 		grabber: grabUsingMetaProperty,
 	},
 	{
@@ -37,7 +37,7 @@ const SOURCES = [
 	{
 		name: 'Nicht Lustig',
 		url: 'https://joscha.com/',
-		regex: /<meta name="thumbnail"\s+content="(.*?)thumbs\/([a-zA-Z0-9\.]*?)"/,
+		regex: /<meta name="thumbnail"\s+content="(.*?)thumbs\/([a-zA-Z0-9.]*?)"/,
 		grabber: grabUsingRegexExtraction,
 	},
 ]
@@ -96,23 +96,23 @@ async function grabUsingUrlFromDate(source) {
 		log.info('grabbing using url from date, source: ', source.name)
 		const url = dateFormat(new Date(), source.url)
 		log.info('using URL: ', url)
-		const response = await axios.get(url)
+		await axios.get(url)
 		return createCartoon(source.name, url)
 	} catch (error) {
 		log.info('no cartoon available yet')
 	}
 }
 async function getWebsiteText(url) {
-	log.info('grabbing from ', url)
+	log.info('grabbing from ' + url)
 	const response = await axios.get(url)
 	return response.data
 }
 
 async function addCartoonToDb(cartoon) {
-	log.info('Submitting cartoon to dynamodb', cartoon)
 	const tableName = process.env.CARTOON_TABLE
 		? process.env.CARTOON_TABLE
 		: 'cartoons'
+	log.info('Submitting cartoon to dynamodb', { cartoon, tableName })
 	return await dynamoDbClient.put({ tableName: tableName, item: cartoon })
 }
 

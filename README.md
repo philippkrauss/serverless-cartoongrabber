@@ -1,9 +1,11 @@
 # serverless-cartoongrabber
 ## how to
 ### deploy / undeploy
-`sls deploy -v --stage dev/prod`
+`yarn install` 
+`yarn build`
+`yarn tf:apply`
 
-`sls remove --stage dev/prod`
+`yarn tf:destroy`
 
 ### run grabber in dev
 the grabber's dev stage does not have any regular trigger. 
