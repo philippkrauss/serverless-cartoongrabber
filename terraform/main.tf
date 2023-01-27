@@ -27,6 +27,12 @@ variable "slack_channel_name" {
   default = "cartoons-dev"
 }
 
+variable "enable_scheduling" {
+  description = "If set to true, enable scheduling of grabber lambda"
+  type        = bool
+  default     = false
+}
+
 data "aws_ssm_parameter" "slack_url" {
   name = "/cartoongrabber/dev/slack-url"
 }
@@ -156,6 +162,28 @@ resource "aws_lambda_event_source_mapping" "lambda_dynamodb" {
   function_name     = aws_lambda_function.terraform_lambda_func_report.arn
   starting_position = "LATEST"
   batch_size        = 1
+}
+
+resource "aws_cloudwatch_event_rule" "schedule" {
+  name                = "terraform_schedule"
+  description         = "Schedule for cartoongrabber"
+  schedule_expression = "cron(25 5,9,13 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "schedule_lambda" {
+  count     = var.enable_scheduling ? 1 : 0
+  rule      = aws_cloudwatch_event_rule.schedule.name
+  target_id = "trigger_grab_lambda"
+  arn       = aws_lambda_function.terraform_lambda_func_grab.arn
+}
+
+
+resource "aws_lambda_permission" "allow_events_bridge_to_run_lambda" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.terraform_lambda_func_grab.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.schedule.arn
 }
 
 //TODO cron trigger
