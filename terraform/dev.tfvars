@@ -1,0 +1,9 @@
+table_name = "cartoons-dev"
+slack_channel_name = "#cartoons-dev"
+enable_scheduling = false
+slack_url_ssm_path = "/cartoongrabber/dev/slack-url"
+lambda_role_name = "cartoongrabber_lambda_role_dev"
+iam_policy_name = "policy_for_cartoongrabber_lambda_role_dev"
+grab_function_name = "cartoongrabber_grab_function_dev"
+report_function_name = "cartoongrabber_report_function_dev"
+schedule_name = "cartoongrabber_schedule_dev"

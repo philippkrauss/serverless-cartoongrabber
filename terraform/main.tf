@@ -18,13 +18,35 @@ provider "aws" {
 }
 
 variable "table_name" {
-  type    = string
-  default = "terraform-cartoons"
+  type = string
 }
 
 variable "slack_channel_name" {
-  type    = string
-  default = "cartoons-dev"
+  type = string
+}
+
+variable "slack_url_ssm_path" {
+  type = string
+}
+
+variable "lambda_role_name" {
+  type = string
+}
+
+variable "iam_policy_name" {
+  type = string
+}
+
+variable "grab_function_name" {
+  type = string
+}
+
+variable "report_function_name" {
+  type = string
+}
+
+variable "schedule_name" {
+  type = string
 }
 
 variable "enable_scheduling" {
@@ -34,12 +56,12 @@ variable "enable_scheduling" {
 }
 
 data "aws_ssm_parameter" "slack_url" {
-  name = "/cartoongrabber/dev/slack-url"
+  name = var.slack_url_ssm_path
 }
 
 
 resource "aws_iam_role" "lambda_role" {
-  name               = "cartoongrabber_tf_grab_function_Role"
+  name               = var.lambda_role_name
   assume_role_policy = jsonencode({
 	"Version" : "2012-10-17",
 	"Statement" : [
@@ -56,7 +78,7 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_policy" "iam_policy_for_lambda" {
-  name        = "policy_for_terraform_cartoongrabber_lambda_role"
+  name        = var.iam_policy_name
   path        = "/"
   description = "AWS IAM Policy for managing aws lambda role"
   policy      = jsonencode({
@@ -64,7 +86,6 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
 	"Statement" : [
 	  {
 		"Action" : [
-		  "logs:CreateLogGroup",
 		  "logs:CreateLogStream",
 		  "logs:PutLogEvents"
 		],
@@ -112,7 +133,7 @@ data "archive_file" "reporter_zip" {
 
 resource "aws_lambda_function" "terraform_lambda_func_grab" {
   filename         = "${path.root}/../dist/grab.zip"
-  function_name    = "cartoongrabber_tf_grab_function"
+  function_name    = var.grab_function_name
   role             = aws_iam_role.lambda_role.arn
   handler          = "index.grab"
   runtime          = "nodejs18.x"
@@ -129,7 +150,7 @@ resource "aws_lambda_function" "terraform_lambda_func_grab" {
 
 resource "aws_lambda_function" "terraform_lambda_func_report" {
   filename         = "${path.root}/../dist/report.zip"
-  function_name    = "cartoongrabber_tf_report_function"
+  function_name    = var.report_function_name
   role             = aws_iam_role.lambda_role.arn
   handler          = "index.report"
   runtime          = "nodejs18.x"
@@ -165,7 +186,7 @@ resource "aws_lambda_event_source_mapping" "lambda_dynamodb" {
 }
 
 resource "aws_cloudwatch_event_rule" "schedule" {
-  name                = "terraform_schedule"
+  name                = var.schedule_name
   description         = "Schedule for cartoongrabber"
   schedule_expression = "cron(25 5,9,13 * * ? *)"
 }
@@ -186,6 +207,13 @@ resource "aws_lambda_permission" "allow_events_bridge_to_run_lambda" {
   source_arn    = aws_cloudwatch_event_rule.schedule.arn
 }
 
-//TODO cron trigger
-//TODO stages dev/prod
-//todo parametrisieren von z.B. Tabellenname, lambda-name, schedule
+
+resource "aws_cloudwatch_log_group" "terraform_loggroup_grab" {
+  name              = "/aws/lambda/${aws_lambda_function.terraform_lambda_func_grab.function_name}"
+  retention_in_days = 14
+}
+
+resource "aws_cloudwatch_log_group" "terraform_loggroup_report" {
+  name              = "/aws/lambda/${aws_lambda_function.terraform_lambda_func_report.function_name}"
+  retention_in_days = 14
+}

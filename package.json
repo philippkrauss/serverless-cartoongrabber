@@ -15,8 +15,10 @@
     "prettier": "prettier --write .",
     "build": "webpack --mode=production",
 		"tf:plan": "cd terraform && terraform plan",
-		"tf:destroy": "cd terraform && terraform destroy",
-		"tf:apply": "cd terraform && terraform apply"
+		"tf:destroy-dev": "cd terraform && terraform destroy -var-file=dev.tfvars",
+		"tf:destroy-prod": "cd terraform && terraform destroy -var-file=prod.tfvars",
+		"tf:apply-dev": "cd terraform && terraform apply -var-file=dev.tfvars",
+		"tf:apply-prod": "cd terraform && terraform apply -var-file=prod.tfvars"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
