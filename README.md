@@ -3,15 +3,17 @@
 ### deploy / undeploy
 `yarn install` 
 `yarn build`
-`yarn tf:apply`
+`yarn tf:apply-dev`
+`yarn tf:apply-prod`
 
-`yarn tf:destroy`
+`yarn tf:destroy-dev`
+`yarn tf:destroy-prod`
 
 ### run grabber in dev
 the grabber's dev stage does not have any regular trigger. 
-Instead, execute it on demand using the following command:
+Instead, execute it using a test event in AWS lambda console.
 
-`sls invoke -f grab --stage dev`
+TODO: It should also be possible to trigger the lambda using aws CLI
 
 ## Technical details
 ### storing secrets
@@ -32,37 +34,3 @@ After the app is set up, configure its URL as SecureString in AWS SSM as `/carto
 
 ### DynamoDB
 The necessary table in AWS DynamoDB is automatically created.
-
-## useful commands
-
-sls deploy -v --stage dev
-sls remove --stage dev
-sls invoke local -f grab
-sls invoke -f grab --stage dev
-
-## local execution
-
-- install dynamodb: `sls dynamodb install`
-- start dynamodb and create tables: `sls dynamodb start`
-- invoke function: `IS_OFFLINE=true sls invoke local -f grab`
-
-or, using serverless-offline:
-
-- install dynamodb: `sls dynamodb install`
-- start offline: `sls offline start`
-
-### cleanup
-
-- `sls dynamodb remove`
-
-# plan
-
-other stuff:
-tagging for all resources
-get notified of errors in logs / other issues
-trigger build in aws
-terraform: setup CI/CD
-
-## Future Ideas
-
-- use typescript
