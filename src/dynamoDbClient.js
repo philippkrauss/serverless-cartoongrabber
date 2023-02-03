@@ -1,6 +1,5 @@
-const dynamodb = require('serverless-dynamodb-client')
-
-const docClient = dynamodb.doc
+const dynamoDB = require('aws-sdk/clients/dynamodb')
+const docClient = new dynamoDB.DocumentClient()
 
 function put({ tableName, item }) {
 	return docClient

@@ -1,8 +1,0 @@
-version: 0.1
-phases:
-  install:
-    commands:
-      - yarn install
-  pre_build:
-    commands:
-      - yarn test
