@@ -20,11 +20,6 @@ const SOURCES = [
 		grabber: grabUsingMetaProperty,
 	},
 	{
-		name: 'Dilbert',
-		url: '"https://dilbert.com/strip/"yyyy-mm-dd',
-		grabber: grabUsingDateAndMetaProperty,
-	},
-	{
 		name: 'Garfield',
 		url: '"https://www.gocomics.com/garfield/"yyyy/mm/dd',
 		grabber: grabUsingDateAndMetaProperty,
